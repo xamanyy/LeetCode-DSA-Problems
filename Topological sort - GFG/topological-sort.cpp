@@ -5,43 +5,50 @@ using namespace std;
  // } Driver Code Ends
 class Solution
 {
-    void dfs(int node,vector<int> adj[],vector<int> &vis,stack<int> &st)
+    vector<int> kahns(int n,vector<int> adj[])
     {
-        vis[node] = 1;
-        for(auto it : adj[node])
+        //calculate indegress.
+        vector<int> ind(n,0);
+        for(int i = 0;i<n;i++)
         {
-            if(!vis[it])
-                dfs(it,adj,vis,st);
+            for(auto it: adj[i])
+            {
+                ind[it]++;
+            }
         }
         
-        st.push(node);
+        queue<int> q;
+        //push the node which have indegree == 0
+        for(int i =0;i<n;i++)
+        {
+            if(ind[i] == 0)
+                q.push(i);
+        }
+        
+        vector<int> ans;
+        while(!q.empty())
+        {
+            auto x = q.front();
+            q.pop();
+            ans.push_back(x);
+            
+            for(auto it: adj[x])
+            {
+                ind[it]--;
+                if(ind[it] == 0)
+                q.push(it);
+            }
+        }
+        
+        return ans;
     }
-    
 	public:
 	//Function to return list containing vertices in Topological order. 
 	vector<int> topoSort(int V, vector<int> adj[]) 
 	{
-	        vector<int> vis(V,0);
-	        stack<int> st;
-	        vector<int> ans;
-	        
-	        for(int i = 0;i<V;i++)
-	        {
-	            if(!vis[i])
-	            {
-	                dfs(i,adj,vis,st);
-	            }
-	        }
-	        
-	        while(!st.empty())
-	        {
-	            auto x = st.top();
-	            st.pop();
-	            
-	            ans.push_back(x);
-	        }
-	        
-	        return ans;
+	    // kahh's Algorithm
+	    return kahns(V,adj);
+	     
 	}
 };
 
