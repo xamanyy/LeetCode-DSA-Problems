@@ -1,34 +1,45 @@
 class Solution {
 public:
     int longestValidParentheses(string s) {
-        //we will set intial parameter as -1
-        // if we got open bracket push its's index.
-        // else pop that from stack.
-        //then check uf stack is emoty so push the current index again.
-        // thenif it is not empty the find the length of maximum i - st.top;
-        //store it into the max Answer.
-        
-        stack<int> st;
-        st.push(-1);
-        
+        //no .of open braces = =no. of clode braces.
         
         int n = s.length();
-
-        int ans = 0;
+        int ans =0;
+        int open = 0,close =0;
+        
+        
+        //o to n close will be more.
         for(int i = 0;i<n;i++)
         {
-            if(s[i] == '(') st.push(i);
-            
+            if(s[i] == '(')
+                open++;
             else
+                close++;
+            
+            if(open == close)
             {
-                st.pop();
-                if(st.empty())
-                    st.push(i);
-                else
-                {
-                    ans = max(ans,i - st.top());
-                }
+                ans = max(ans,open+close);
             }
+            else if(close > open)
+                open = close = 0;
+        }
+        
+        //n -- 0;
+        open = close = 0;
+        
+        for(int  i = n-1;i>=0;i--)
+        {
+            if(s[i] == '(')
+                open++;
+            else
+                close++;
+            
+            if(open == close)
+            {
+                ans = max(ans,open+close);
+            }
+            else if(open > close)
+                open = close = 0;
         }
         return ans;
     }
