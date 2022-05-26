@@ -1,37 +1,23 @@
 class Solution {
 public:
+    
+    int dp[201][201];
+    
+    int helper(int x,int y,int n,int m,vector<vector<int>> &grid)
+    {      
+        if(x >= n || y >= m) return INT_MAX;
+        
+        else if(x  == n-1 && y == m-1)
+            return grid[x][y];
+        if(dp[x][y] != -1) return dp[x][y];
+        
+        return dp[x][y]  = grid[x][y]  + min(helper(x+1,y,n,m,grid), helper(x,y+1,n,m,grid));
+    }
+    
     int minPathSum(vector<vector<int>>& grid) {
-        
-        int  n = grid.size();
-        int  m = grid[0].size();
-        
-        int dp[n][m];
-        
-        dp[0][0] = grid[0][0];
-        
-        //if we have only one row,
-        for(int i = 1;i<m;i++)
-        {
-            dp[0][i] = dp[0][i-1] + grid[0][i];
-        }
-        
-        //if we have only one column
-        
-        for(int i = 1;i<n;i++)
-        {
-            dp[i][0] = dp[i-1][0] + grid[i][0];
-        }
-        
-        //rest of the matrix.
-        
-        for(int i = 1;i<n;i++)
-        {
-            for(int j = 1;j<m;j++)
-            {
-                dp[i][j] = grid[i][j]  + min(dp[i-1][j],dp[i][j-1]);
-            }
-        }
-        
-        return dp[n-1][m-1];
+        int n = grid.size();
+        int m = grid[0].size();
+        memset(dp,-1,sizeof dp);
+        return helper(0,0,n,m,grid);
     }
 };
