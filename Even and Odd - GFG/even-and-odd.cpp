@@ -10,26 +10,16 @@ class Solution {
   public:
     void reArrange(int arr[], int n) {
         // code here
+        int even = 0;
+        int odd = 1;
         
-        int odd = 1,even = 0;
-        int temp[n];
-        
-        for(int i = 0;i<n;i++)
+        while(even <n && odd < n )
         {
-            if(arr[i]%2 == 0)
-            {
-                temp[even] = arr[i];
-                even = even+2;
-            }
-            else
-            {
-                temp[odd] = arr[i];
-                odd = odd+2;
-            }
+            while(arr[even] %2 == 0) even +=2;
+            while(arr[odd] %2 == 1) odd +=2;
+            
+            swap(arr[even],arr[odd]);
         }
-        
-        for(int i = 0 ;i<n;i++)
-            arr[i] = temp[i];
     }
 };
 
